@@ -5,25 +5,25 @@ using WeatherApp.Services.Interfaces;
 
 namespace WeatherApiFunctionApp;
 
-public class Function1
+public class ProcessWeatherData
 {
     private readonly ILogger _logger;
     private readonly ILocationService _locationService;
     private readonly IWeatherService _weatherService;
     private readonly IBadAttemptLogService _badAttemptLogService;
 
-    public Function1(ILoggerFactory loggerFactory,
+    public ProcessWeatherData(ILoggerFactory loggerFactory,
         ILocationService locationService,
         IWeatherService weatherService,
         IBadAttemptLogService badAttemptLogService)
     {
-        _logger = loggerFactory.CreateLogger<Function1>();
+        _logger = loggerFactory.CreateLogger<ProcessWeatherData>();
         _locationService = locationService;
         _weatherService = weatherService;
         _badAttemptLogService = badAttemptLogService;
     }
 
-    [Function("Function1")]
+    [Function("ProcessWeatherData")]
     public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
     {
         _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTime.Now);
