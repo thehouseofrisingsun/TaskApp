@@ -3,6 +3,7 @@ using WeatherApp.Data;
 using WeatherApp.Data.Entities;
 using WeatherApp.Data.Repositories;
 
+
 namespace WeatherApp.Tests.RepositoriesTests
 {
     [TestFixture]
@@ -40,6 +41,7 @@ namespace WeatherApp.Tests.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual("TestCountry1", result.Country);
         }
+
 
         [TearDown]
         public void TearDown()

@@ -49,8 +49,7 @@ namespace WeatherApp.Data.Repositories
                     MAX(Temperature) AS max_temperature,
                     MIN(Temperature) AS min_temperature
                 FROM [WeatherAnalytics].[dbo].[CurrentWeather]
-                WHERE LastUpdate >= @from
-                    AND LastUpdate <= @to
+                WHERE LastUpdate BETWEEN @from AND @to
                 GROUP BY Country, City
                 ) main
                 LEFT JOIN (

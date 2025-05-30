@@ -9,22 +9,19 @@ namespace WeatherApp.WebSite.Controllers
     [Route("api/[controller]")]
     public class WeatherController : Controller
     {
-        private readonly ILogger<WeatherController> _logger;
         private readonly IWeatherService _weatherService;
         private readonly ILocationService _locationService;
 
 
-        public WeatherController(ILogger<WeatherController> logger, IWeatherService weatherService, ILocationService locationService)
+        public WeatherController(IWeatherService weatherService, ILocationService locationService)
         {
-            _logger = logger;
             _weatherService = weatherService;
             _locationService = locationService;
         }
 
         [Route("minMaxTemperature")]
-        public async Task<IActionResult> MinMaxTemperature([FromQuery] DateTime? from, [FromQuery] DateTime? to)
+        public async Task<JsonResult> MinMaxTemperature([FromQuery] DateTime? from, [FromQuery] DateTime? to)
         {
-            //last 7 days - date range by default 
             var toDate = to ?? DateTime.UtcNow;
             var fromDate = from ?? toDate.AddDays(-7);
 
