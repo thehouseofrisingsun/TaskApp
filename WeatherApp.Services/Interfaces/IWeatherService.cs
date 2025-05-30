@@ -9,8 +9,6 @@ namespace WeatherApp.Services.Interfaces
 
         Task BulkUpdateCurrentWeatherInfo(List<CurrentWeatherModel> currentWeather);
 
-        Task<List<MinTemperatureModel>> GetMinTemperature();
-
-        Task<IList<MaxWindSpeedModel>> GetMaxWindSpeed();
+        Task<List<MinMaxTemperatureModel>> GetMinMaxTemperature(DateTime from, DateTime to);
     }
 }

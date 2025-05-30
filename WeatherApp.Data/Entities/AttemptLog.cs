@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.Data.Entities
 {
-    public class BadAttemptLog
+    public class AttemptLog
     {
-        public int ID { get; set; }
-
-        public string ErrorMessage { get; set; }
+        public int Id { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string RequestUri { get; set; }
+
+        public int StatusCode { get; set; }
+
+        public string? ErrorMessage { get; set; }
     }
 }

@@ -11,14 +11,14 @@ namespace WeatherApp.Data
 
         public DbSet<CurrentWeather> CurrentWeather { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<BadAttemptLog> BadAttemptLogs { get; set; }
+        public DbSet<AttemptLog> AttemptLogs { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CurrentWeather>().ToTable("CurrentWeather");
             modelBuilder.Entity<Location>().ToTable("Location");
-            modelBuilder.Entity<BadAttemptLog>().ToTable("BadAttemptLog");
+            modelBuilder.Entity<AttemptLog>().ToTable("AttemptLog");
         }
     }
 }

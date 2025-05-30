@@ -1,9 +1,11 @@
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using WeatherApp.Data;
 using WeatherApp.Data.Repositories;
@@ -28,14 +30,21 @@ var host = new HostBuilder()
 
         services.AddDbContext<WeatherContext>(options =>
             options.UseSqlServer(connStr));
+        
         services.AddScoped<IWeatherService, WeatherService>();
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<IWeatherRepository, WeatherRepository>();
-        services.AddScoped<IBadAttemptLogRepository, BadAttemptLogRepository>();
-        services.AddScoped<IBadAttemptLogService, BadAttemptLogService>();
+        services.AddScoped<IAttemptLogRepository, AttemptLogRepository>();
+        services.AddScoped<IAttemptLogService, AttemptLogService>();
     })
 .Build();
+
+using (var scope = host.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<WeatherContext>();
+    db.Database.Migrate();
+}
 
 host.Run();
 

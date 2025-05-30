@@ -5,10 +5,10 @@ namespace WeatherApp.Data.Repositories.Interfaces
     public interface IWeatherRepository
     {
         Task<IEnumerable<CurrentWeather>> GetAll();
+
         Task BulkUpdateCurrentWeather(IEnumerable<CurrentWeather> weatherList);
 
-        Task<List<CurrentWeather>> GetMinTemperature();
+        Task<List<WeatherStatInfo>> GetMinMaxTemperature(DateTime from, DateTime to);
 
-        Task<List<CurrentWeather>> GetMaxWindSpeed();
     }
 }

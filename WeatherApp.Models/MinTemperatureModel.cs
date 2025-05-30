@@ -1,10 +1,13 @@
 ﻿namespace WeatherApp.Models
 {
-    public class MinTemperatureModel
+    public class MinMaxTemperatureModel
     {
         public double MinTemperature { get; set; }
         public string City { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
-        public DateTime LastUpdate { get; set; }
+        public double MaxTemperature { get; set; }
+        public DateTime MinTemperatureLastUpdate { get; set; }
+        public DateTime MaxTemperatureLastUpdate { get; set; }
+
     }
 }

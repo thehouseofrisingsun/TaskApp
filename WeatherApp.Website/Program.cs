@@ -13,6 +13,9 @@ builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<IAttemptLogRepository, AttemptLogRepository>();
+builder.Services.AddScoped<IAttemptLogService, AttemptLogService>();
+
 
 
 var connectionString = builder.Configuration.GetConnectionString("WeatherDb");
@@ -30,6 +33,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseDefaultFiles();
+app.MapControllers();
 
 app.UseRouting();
 

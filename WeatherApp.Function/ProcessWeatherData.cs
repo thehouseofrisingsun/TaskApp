@@ -10,17 +10,17 @@ public class ProcessWeatherData
     private readonly ILogger _logger;
     private readonly ILocationService _locationService;
     private readonly IWeatherService _weatherService;
-    private readonly IBadAttemptLogService _badAttemptLogService;
+    private readonly IAttemptLogService _attemptLogService;
 
     public ProcessWeatherData(ILoggerFactory loggerFactory,
         ILocationService locationService,
         IWeatherService weatherService,
-        IBadAttemptLogService badAttemptLogService)
+        IAttemptLogService attemptLogService)
     {
         _logger = loggerFactory.CreateLogger<ProcessWeatherData>();
         _locationService = locationService;
         _weatherService = weatherService;
-        _badAttemptLogService = badAttemptLogService;
+        _attemptLogService = attemptLogService;
     }
 
     [Function("ProcessWeatherData")]
@@ -51,14 +51,6 @@ public class ProcessWeatherData
             if (data != null)
             {
                 currentWeatherDTOs.Add(data);
-            }
-            else
-            {
-                await _badAttemptLogService.AddLog(new BadAttemptLogModel
-                {
-                    Date = DateTime.Now,
-                    ErrorMessage = "Failed to fetch data from API"
-                });
             }
         }
 

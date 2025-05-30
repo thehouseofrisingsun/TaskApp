@@ -12,12 +12,19 @@ namespace WeatherApp.Services
         private readonly HttpClient _client;
         private readonly string _apiKey;
         private readonly IWeatherRepository _weatherRepository;
+        IAttemptLogService _attemptLogService;
+        private readonly IAttemptLogRepository _attemptLogRepository;
 
-        public WeatherService(IConfiguration configuration, IWeatherRepository weatherRepository)
+        public WeatherService(IConfiguration configuration, 
+            IWeatherRepository weatherRepository,
+            IAttemptLogRepository attemptLogRepository,
+            IAttemptLogService attemptLogService)
         {
             _client = new();
             _weatherRepository = weatherRepository;
             _apiKey = configuration["OpenWeatherAPIKey"];
+            _attemptLogRepository = attemptLogRepository;
+            _attemptLogService = attemptLogService;
         }
 
         public async Task BulkUpdateCurrentWeatherInfo(List<CurrentWeatherModel> currentWeatherBatch)
@@ -45,35 +52,35 @@ namespace WeatherApp.Services
             HttpResponseMessage response = await _client.GetAsync(requestUri);
 
             if (response.IsSuccessStatusCode)
+            {
                 weatherForecast = await response.Content.ReadFromJsonAsync<CurrentWeatherModel>();
+            }
+
+            var log = new AttemptLogModel
+            {
+                Date = DateTime.Now,
+                StatusCode = (int)response.StatusCode,
+                ErrorMessage = response.IsSuccessStatusCode ? string.Empty : await response.Content.ReadAsStringAsync(),
+                RequestUri = requestUri
+            };
+
+            await _attemptLogService.AddLog(log);
 
             return weatherForecast;
         }
 
-        public async Task<IList<MaxWindSpeedModel>> GetMaxWindSpeed()
+        public async Task<List<MinMaxTemperatureModel>> GetMinMaxTemperature(DateTime from, DateTime to)
         {
-            var entity = await _weatherRepository.GetMaxWindSpeed();
-            var mxWindSpeedModel = entity.Select(d =>
-                new MaxWindSpeedModel
-                {
-                    City = d.City ?? string.Empty,
-                    Country = d.Country ?? string.Empty,
-                    LastUpdate = d.LastUpdate,
-                    MaxWindSpeed = d.WindSpeed ?? 0
-                }).ToList();
-            return mxWindSpeedModel;
-        }
-
-        public async Task<List<MinTemperatureModel>> GetMinTemperature()
-        {
-            var entity = await _weatherRepository.GetMinTemperature();
+            var entity = await _weatherRepository.GetMinMaxTemperature(from, to);
             var minTemperatureModel = entity.Select(d =>
-                new MinTemperatureModel
+                new MinMaxTemperatureModel
                 {
                     City = d.City ?? string.Empty,
                     Country = d.Country ?? string.Empty,
-                    LastUpdate = d.LastUpdate,
-                    MinTemperature = d.Temperature ?? 0
+                    MinTemperatureLastUpdate = d.MinTemperatureLastUpdate,
+                    MaxTemperatureLastUpdate = d.MaxTemperatureLastUpdate,
+                    MinTemperature = d.MinTemperature ?? 0,
+                    MaxTemperature = d.MaxTemperature ?? 0
                 }).ToList();
             return minTemperatureModel;
         }

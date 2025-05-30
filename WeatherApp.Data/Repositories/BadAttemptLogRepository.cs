@@ -4,20 +4,20 @@ using WeatherApp.Data.Repositories.Interfaces;
 
 namespace WeatherApp.Data.Repositories
 {
-    public class BadAttemptLogRepository : IBadAttemptLogRepository
+    public class AttemptLogRepository : IAttemptLogRepository
     {
         private readonly WeatherContext _context;
 
-        public BadAttemptLogRepository(WeatherContext context)
+        public AttemptLogRepository(WeatherContext context)
         {
             _context = context;
         }
 
-        public async Task AddLog(BadAttemptLog log) => await _context.BadAttemptLogs.AddAsync(log);
+        public async Task AddLog(AttemptLog log) => await _context.AttemptLogs.AddAsync(log);
 
-        public async Task<IEnumerable<BadAttemptLog>> GetAll()
+        public async Task<IEnumerable<AttemptLog>> GetAll()
         {
-            return await _context.BadAttemptLogs.ToListAsync();
+            return await _context.AttemptLogs.ToListAsync();
         }
     }
 }

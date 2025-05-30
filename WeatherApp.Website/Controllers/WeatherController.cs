@@ -1,34 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Diagnostics;
 using WeatherApp.Services.Interfaces;
 using WeatherApp.Website.Models;
 
 namespace WeatherApp.WebSite.Controllers
 {
-    public class HomeController : Controller
+    [Route("api/[controller]")]
+    public class WeatherController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<WeatherController> _logger;
         private readonly IWeatherService _weatherService;
         private readonly ILocationService _locationService;
 
 
-        public HomeController(ILogger<HomeController> logger, IWeatherService weatherService, ILocationService locationService)
+        public WeatherController(ILogger<WeatherController> logger, IWeatherService weatherService, ILocationService locationService)
         {
             _logger = logger;
             _weatherService = weatherService;
             _locationService = locationService;
         }
 
-
-        public async Task<IActionResult> MinTemperature()
+        [Route("minMaxTemperature")]
+        public async Task<IActionResult> MinMaxTemperature([FromQuery] DateTime? from, [FromQuery] DateTime? to)
         {
-            var data = await _weatherService.GetMinTemperature();
-            return Json(data);
-        }
+            //last 7 days - date range by default 
+            var toDate = to ?? DateTime.UtcNow;
+            var fromDate = from ?? toDate.AddDays(-7);
 
-        public async Task<IActionResult> MaxWindSpeed()
-        {
-            var data = await _weatherService.GetMaxWindSpeed();
+            var data = await _weatherService.GetMinMaxTemperature(fromDate, toDate);
             return Json(data);
         }
 

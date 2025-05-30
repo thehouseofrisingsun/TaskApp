@@ -2,9 +2,9 @@
 
 namespace WeatherApp.Data.Repositories.Interfaces
 {
-    public interface IBadAttemptLogRepository
+    public interface IAttemptLogRepository
     {
-        Task<IEnumerable<BadAttemptLog>> GetAll();
-        Task  AddLog(BadAttemptLog log);
+        Task<IEnumerable<AttemptLog>> GetAll();
+        Task  AddLog(AttemptLog log);
     }
 }
