@@ -32,7 +32,6 @@ var host = new HostBuilder()
     })
     .ConfigureServices(services =>
     {
-
         services.AddDbContext<WeatherContext>(options =>
             options.UseSqlServer(connStr));
         
@@ -42,16 +41,25 @@ var host = new HostBuilder()
         services.AddScoped<IWeatherRepository, WeatherRepository>();
         services.AddScoped<IAttemptLogRepository, AttemptLogRepository>();
         services.AddScoped<IAttemptLogService, AttemptLogService>();
+      
     })
 .Build();
 
 using (var scope = host.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<WeatherContext>();
-    db.Database.Migrate();
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var db = services.GetRequiredService<WeatherContext>();
+        DbInitializer.Initialize(db);  
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while initializing the database.");
+    }
 }
 
+
 host.Run();
-
-//builder.Build().Run();
-
