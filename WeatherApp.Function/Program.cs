@@ -25,6 +25,11 @@ var connStr = Environment.GetEnvironmentVariable("SqlConnectionString");
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
+    .ConfigureAppConfiguration(config =>
+    {
+        config.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables();
+    })
     .ConfigureServices(services =>
     {
 

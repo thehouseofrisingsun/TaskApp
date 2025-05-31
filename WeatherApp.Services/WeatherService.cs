@@ -11,19 +11,18 @@ namespace WeatherApp.Services
     {
         private readonly HttpClient _client;
         private readonly string _apiKey;
+        private readonly string _openWeatherUrl;
         private readonly IWeatherRepository _weatherRepository;
         IAttemptLogService _attemptLogService;
-        private readonly IAttemptLogRepository _attemptLogRepository;
 
         public WeatherService(IConfiguration configuration, 
             IWeatherRepository weatherRepository,
-            IAttemptLogRepository attemptLogRepository,
             IAttemptLogService attemptLogService)
         {
+            _openWeatherUrl = configuration["OpenWeatherBaseUrl"];
             _client = new();
             _weatherRepository = weatherRepository;
             _apiKey = configuration["OpenWeatherAPIKey"];
-            _attemptLogRepository = attemptLogRepository;
             _attemptLogService = attemptLogService;
         }
 
@@ -86,6 +85,6 @@ namespace WeatherApp.Services
         }
 
         private string GetCurrentWeatherRequestUri(LocationModel location) =>
-                    $"https://api.openweathermap.org/data/2.5/weather?lat={location.lat}&lon={location.lon}&units=metric&appid={_apiKey}";
+                    $"{_openWeatherUrl}?lat={location.lat}&lon={location.lon}&units=metric&appid={_apiKey}";
     }
 }
