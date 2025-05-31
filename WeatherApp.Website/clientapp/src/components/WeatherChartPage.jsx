@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import WeatherChart from './components/WeatherChart';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
+import WeatherChart from './WeatherChart'
 
-function App() {
+export default function WeatherChartPage() {
     const dateFrominit = new Date();
     dateFrominit.setDate(dateFrominit.getDate() - 7); //set initial values 
     const dateToInit = new Date();
-    dateToInit.setDate(dateToInit.getDate() + 1);  
+    dateToInit.setDate(dateToInit.getDate() + 1);
 
     const [data, setData] = useState([]);
     const [from, setFrom] = useState(dateFrominit.toISOString().split('T')[0]);
     const [to, setTo] = useState(dateToInit.toISOString().split('T')[0]);
+
 
     const fetchData = async () => {
         const params = new URLSearchParams();
@@ -35,4 +38,3 @@ function App() {
     );
 }
 
-export default App;

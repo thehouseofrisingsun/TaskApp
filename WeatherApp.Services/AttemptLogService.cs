@@ -27,9 +27,9 @@ namespace WeatherApp.Services
            await _attemptLogRepository.AddLog(logEntity);
         }
 
-        public Task<IEnumerable<Data.Entities.AttemptLog>> GetAll()
+        public async Task<IEnumerable<Data.Entities.AttemptLog>> GetAll()
         {
-            throw new NotImplementedException();
+           return await _attemptLogRepository.GetAll();
         }
     }
 }
