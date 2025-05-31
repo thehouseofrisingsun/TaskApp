@@ -46,13 +46,13 @@ namespace WeatherApp.Tests.ServicesTests
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent("{\"temperature\": 15}") // mocked JSON
+                    Content = new StringContent("{\"temperature\": 15}") 
                 });
 
             _httpClient = new HttpClient(_httpMessageHandler.Object);
 
             _logger = new Mock<IAttemptLogService>();
-            _weatherService = new WeatherService(_config.Object,_weatherRepository.Object, _logger.Object); // inject mocks
+            _weatherService = new WeatherService(_config.Object,_weatherRepository.Object, _logger.Object);
         }
 
         [Test]
