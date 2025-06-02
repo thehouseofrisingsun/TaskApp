@@ -3,23 +3,17 @@ import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 export default function WeatherChart({ data }) {
-    //get latest record per city
-    const latestPerCity = [];
-    const seen = new Set();
+    const records = [];
 
-    //  get the latest record
-    [...data].reverse().forEach(item => {
-        if (!seen.has(item.city)) {
-            latestPerCity.push(item);
-            seen.add(item.city);
-        }
+    [...data].forEach(item => {
+            records.push(item);
     });
-    console.log(latestPerCity)
-    const cities = latestPerCity.map(d => d.city);
-    const minTemps = latestPerCity.map(d => d.minTemperature);
-    const maxTemps = latestPerCity.map(d => d.maxTemperature);
-    const minLastUpdate = latestPerCity.map(d => d.minTemperatureLastUpdate);
-    const maxLastUpdate = latestPerCity.map(d => d.maxTemperatureLastUpdate);
+    console.log(records)
+    const cities = records.map(d => d.city);
+    const minTemps = records.map(d => d.minTemperature);
+    const maxTemps = records.map(d => d.maxTemperature);
+    const minLastUpdate = records.map(d => d.minTemperatureLastUpdate);
+    const maxLastUpdate = records.map(d => d.maxTemperatureLastUpdate);
 
 
     const chartData = {
